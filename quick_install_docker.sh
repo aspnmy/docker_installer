@@ -301,9 +301,10 @@ function Set_Firewall(){
 
 # 加入portainer节点
 function join_node_portainer() {
-    if docker version >/dev/null 2>&1
+    if docker version >/dev/null 2>&1 ;then
         if [[ $? -ne 0 ]]; then
         log "...  docker未正确安装请重新运行本脚本安装docker"
+        fi
     else
         log "安装portainer节点"
         mkdir -p /etc/portainer
