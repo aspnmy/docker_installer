@@ -12,7 +12,7 @@ CURRENT_DIR=$(
 )
 
 function log() {
-    message="[1Panel Log]: $1 "
+    message="[Aspnmy Log]: $1 "
     case "$1" in
         *"失败"*|*"错误"*|*"请使用 root 或 sudo 权限运行此脚本"*)
             echo -e "${RED}${message}${NC}" 2>&1 | tee -a "${CURRENT_DIR}"/install.log
