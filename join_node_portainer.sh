@@ -5,7 +5,7 @@ GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
 BLUE='\033[0;34m'
 NC='\033[0m'
-AGENT_PORT= '9001'
+AGENT_PORT="9001"
 
 CURRENT_DIR=$(
     cd "$(dirname "$0")" || exit
