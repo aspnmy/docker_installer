@@ -30,16 +30,16 @@ function log() {
 }
 echo
 cat << EOF
-██████╗  ██████╗  ██████╗██╗  ██╗███████╗██████╗         ██╗███╗   ██╗███████╗████████╗ █████╗ ██╗     ██╗     ███████╗██████╗ 
-██╔══██╗██╔═══██╗██╔════╝██║ ██╔╝██╔════╝██╔══██╗        ██║████╗  ██║██╔════╝╚══██╔══╝██╔══██╗██║     ██║     ██╔════╝██╔══██╗
-██║  ██║██║   ██║██║     █████╔╝ █████╗  ██████╔╝        ██║██╔██╗ ██║███████╗   ██║   ███████║██║     ██║     █████╗  ██████╔╝
-██║  ██║██║   ██║██║     ██╔═██╗ ██╔══╝  ██╔══██╗        ██║██║╚██╗██║╚════██║   ██║   ██╔══██║██║     ██║     ██╔══╝  ██╔══██╗
-██████╔╝╚██████╔╝╚██████╗██║  ██╗███████╗██║  ██║███████╗██║██║ ╚████║███████║   ██║   ██║  ██║███████╗███████╗███████╗██║  ██║
-╚═════╝  ╚═════╝  ╚═════╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚══════╝╚═╝╚═╝  ╚═══╝╚══════╝   ╚═╝   ╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝╚═╝  ╚═╝
+██████   ██████   ██████ ██   ██ ███████ ██████          ██ ███    ██ ███████ ████████  █████  ██      ██      ███████ ██████  
+██   ██ ██    ██ ██      ██  ██  ██      ██   ██         ██ ████   ██ ██         ██    ██   ██ ██      ██      ██      ██   ██ 
+██   ██ ██    ██ ██      █████   █████   ██████          ██ ██ ██  ██ ███████    ██    ███████ ██      ██      █████   ██████  
+██   ██ ██    ██ ██      ██  ██  ██      ██   ██         ██ ██  ██ ██      ██    ██    ██   ██ ██      ██      ██      ██   ██ 
+██████   ██████   ██████ ██   ██ ███████ ██   ██ ███████ ██ ██   ████ ███████    ██    ██   ██ ███████ ███████ ███████ ██   ██ 
                                                                                                                                
+                                                                                                                                                                                                                                                              
 https://t.me/+BqvlH6BDOWE3NjQ1
 
-基于1pane面板的安装脚本进行提取，只保留的docker相关的安装业务，去除了面板代码安装业务
+基于1pane面板的安装脚本进行提取,只保留的docker相关的安装业务,去除了面板代码安装业务
 EOF
 
 log "======================= 开始安装 ======================="
@@ -71,7 +71,7 @@ function Set_Dir(){
         fi
     else
         PANEL_BASE_DIR=/opt
-        log "(设置超时，使用默认安装路径 /opt)"
+        log "(设置超时,使用默认安装路径 /opt)"
     fi
 }
 
@@ -93,7 +93,7 @@ function configure_accelerator() {
     read -p "是否配置镜像加速？(y/n): " configure_accelerator
     if [[ "$configure_accelerator" == "y" ]]; then
         if [ -f "$DAEMON_JSON" ]; then
-            log "配置文件已存在，我们将备份现有配置文件为 ${BACKUP_FILE} 并创建新的配置文件。"
+            log "配置文件已存在,我们将备份现有配置文件为 ${BACKUP_FILE} 并创建新的配置文件。"
             cp "$DAEMON_JSON" "$BACKUP_FILE"
             create_daemon_json
         else
@@ -115,7 +115,7 @@ function Install_Docker(){
         major_version=${docker_version%%.*}
         minor_version=${docker_version##*.}
         if [[ $major_version -lt 20 ]]; then
-            log "检测到 Docker 版本为 $docker_version，低于 20.x，可能影响部分功能的正常使用，建议手动升级至更高版本。"
+            log "检测到 Docker 版本为 $docker_version,低于 20.x,可能影响部分功能的正常使用,建议手动升级至更高版本。"
         fi
         configure_accelerator
     else
@@ -170,7 +170,7 @@ function Install_Docker(){
             wait
 
             if [ -n "$selected_source" ]; then
-                log "选择延迟最低的源 $selected_source，延迟为 $min_delay 秒"
+                log "选择延迟最低的源 $selected_source,延迟为 $min_delay 秒"
                 export DOWNLOAD_URL="$selected_source"
                 
                 for alt_source in "${docker_install_scripts[@]}"; do
@@ -179,12 +179,12 @@ function Install_Docker(){
                         log "成功从 $alt_source 下载安装脚本"
                         break
                     else
-                        log "从 $alt_source 下载安装脚本失败，尝试下一个备选链接"
+                        log "从 $alt_source 下载安装脚本失败,尝试下一个备选链接"
                     fi
                 done
                 
                 if [ ! -f "get-docker.sh" ]; then
-                    log "所有下载尝试都失败了。您可以尝试手动安装 Docker，运行以下命令："
+                    log "所有下载尝试都失败了。您可以尝试手动安装 Docker,运行以下命令："
                     log "bash <(curl -sSL https://linuxmirrors.cn/docker.sh)"
                     exit 1
                 fi
@@ -198,7 +198,7 @@ function Install_Docker(){
                 
                 docker version >/dev/null 2>&1
                 if [[ $? -ne 0 ]]; then
-                    log "docker 安装失败\n您可以尝试使用离线包进行安装，具体安装步骤请参考以下链接：https://1panel.cn/docs/installation/package_installation/"
+                    log "docker 安装失败\n您可以尝试使用离线包进行安装,具体安装步骤请参考以下链接：https://1panel.cn/docs/installation/package_installation/"
                     exit 1
                 else
                     log "docker 安装成功"
@@ -210,7 +210,7 @@ function Install_Docker(){
                 exit 1
             fi
         else
-            log "非中国大陆地区，无需更改源"
+            log "非中国大陆地区,无需更改源"
             export DOWNLOAD_URL="https://download.docker.com"
             curl -fsSL "https://get.docker.com" -o get-docker.sh
             sh get-docker.sh 2>&1 | tee -a "${CURRENT_DIR}"/install.log
@@ -225,7 +225,7 @@ function Install_Docker(){
 
             docker version >/dev/null 2>&1
             if [[ $? -ne 0 ]]; then
-                log "docker 安装失败\n您可以尝试使用安装包进行安装，具体安装步骤请参考以下链接：https://1panel.cn/docs/installation/package_installation/"
+                log "docker 安装失败\n您可以尝试使用安装包进行安装,具体安装步骤请参考以下链接：https://1panel.cn/docs/installation/package_installation/"
                 exit 1
             else
                 log "docker 安装成功"
@@ -245,7 +245,7 @@ function Install_Compose(){
 		fi
 		curl -L https://resource.fit2cloud.com/docker/compose/releases/download/v2.26.1/docker-compose-$(uname -s | tr A-Z a-z)-"$arch" -o /usr/local/bin/docker-compose 2>&1 | tee -a "${CURRENT_DIR}"/install.log
         if [[ ! -f /usr/local/bin/docker-compose ]];then
-            log "docker-compose 下载失败，请稍候重试"
+            log "docker-compose 下载失败,请稍候重试"
             exit 1
         fi
         chmod +x /usr/local/bin/docker-compose
@@ -261,15 +261,15 @@ function Install_Compose(){
     else
         compose_v=$(docker-compose -v)
         if [[ $compose_v =~ 'docker-compose' ]];then
-            read -p "检测到已安装 Docker Compose 版本较低（需大于等于 v2.0.0 版本），是否升级 [y/n] : " UPGRADE_DOCKER_COMPOSE
+            read -p "检测到已安装 Docker Compose 版本较低（需大于等于 v2.0.0 版本）,是否升级 [y/n] : " UPGRADE_DOCKER_COMPOSE
             if [[ "$UPGRADE_DOCKER_COMPOSE" == "Y" ]] || [[ "$UPGRADE_DOCKER_COMPOSE" == "y" ]]; then
                 rm -rf /usr/local/bin/docker-compose /usr/bin/docker-compose
                 Install_Compose
             else
-                log "Docker Compose 版本为 $compose_v，可能会影响应用商店的正常使用"
+                log "Docker Compose 版本为 $compose_v,可能会影响应用商店的正常使用"
             fi
         else
-            log "检测到 Docker Compose 已安装，跳过安装步骤"
+            log "检测到 Docker Compose 已安装,跳过安装步骤"
         fi
     fi
 }
@@ -283,7 +283,7 @@ function Set_Firewall(){
             firewall-cmd --zone=public --add-port="$PANEL_PORT"/tcp --permanent
             firewall-cmd --reload
         else
-            log "防火墙未开启，忽略端口开放"
+            log "防火墙未开启,忽略端口开放"
         fi
     fi
 
@@ -293,7 +293,7 @@ function Set_Firewall(){
             ufw allow "$PANEL_PORT"/tcp
             ufw reload
         else
-            log "防火墙未开启，忽略端口开放"
+            log "防火墙未开启,忽略端口开放"
         fi
     fi
 }
@@ -309,26 +309,15 @@ function join_node_portainer() {
         log "安装portainer节点"
         mkdir -p /etc/portainer
         curl -sSL https://raw.githubusercontent.com/aspnmy/docker_installer/refs/heads/master/join_node_portainer.sh -o join_node.sh  && bash join_node.sh
-        log "portainer节点安装完成，请从portainer管理面板中添加新的docker-node节点。记得服务器或安全组放通9001端口"
+        log "portainer节点安装完成,请从portainer管理面板中添加新的docker-node节点。记得服务器或安全组放通9001端口"
     fi
 }
-
-
-
-
-
-
-
-
-
-
 
 function main(){
     Check_Root
     Set_Dir
     Install_Docker
     Install_Compose
-
     join_node_portainer
 }
 main
