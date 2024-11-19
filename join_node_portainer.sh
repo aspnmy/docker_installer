@@ -64,5 +64,6 @@ function Set_Firewall($AGENT_PORT){
 
 function main(){
   install_node_portainer("9001")
+  Set_Firewall("9001")
 }
 main
