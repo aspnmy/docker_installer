@@ -88,6 +88,7 @@ function create_daemon_json() {
     log "镜像加速配置已添加。"
 }
 
+
 function configure_accelerator() {
     read -p "是否配置镜像加速？(y/n): " configure_accelerator
     if [[ "$configure_accelerator" == "y" ]]; then
@@ -298,7 +299,18 @@ function Set_Firewall(){
 }
 
 
-
+# 加入portainer节点
+function join_node_portainer() {
+    if docker version >/dev/null 2>&1
+        if [[ $? -ne 0 ]]; then
+        log "...  docker未正确安装请重新运行本脚本安装docker"
+    else
+        log "安装portainer节点"
+        mkdir -p /etc/portainer
+        curl -sSL https://raw.githubusercontent.com/aspnmy/docker_installer/refs/heads/master/join_node_portainer.sh -o join_node.sh  && bash join_node.sh
+        log "portainer节点安装完成，请从portainer管理面板中添加新的docker-node节点。记得服务器或安全组放通9001端口"
+    fi
+}
 
 
 
@@ -316,6 +328,6 @@ function main(){
     Install_Docker
     Install_Compose
 
-
+    join_node_portainer
 }
 main
