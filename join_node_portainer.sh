@@ -130,7 +130,7 @@ EOF
 function Set_Firewall() {
     # 检查是否为 root 用户或者是否有 sudo 权限
     check_root_or_sudo
-    install_firewall
+
     # 优先使用的防火墙
     local default_firewall=""
 
@@ -186,6 +186,7 @@ function command_exists() {
 
 function main(){
     install_node_portainer
+    install_firewall
     Set_Firewall
 }
 main
