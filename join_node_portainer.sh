@@ -155,8 +155,8 @@ function configure_firewalld() {
 function configure_ufw() {
     if ! systemctl status ufw | grep -q "Active: active" >/dev/null 2>&1; then
         log "启动 ufw 并设置为开机启动"
-        systemctl start ufw
-        systemctl enable ufw
+        sudo systemctl start ufw && sudo systemctl enable ufw
+        sudo ufw enable && ufw reload
     fi
     log "防火墙开放 ${AGENT_PORT} 端口"
     ufw allow "${AGENT_PORT}"/tcp
