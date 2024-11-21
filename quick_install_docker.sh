@@ -301,18 +301,16 @@ function Set_Firewall(){
 
 # 加入portainer节点
 function join_node_portainer() {
-    if docker version >/dev/null 2>&1 ;then
-        if [[ $? -ne 0 ]]; then
-        log "...  docker未正确安装请重新运行本脚本安装docker"
-        fi
+    # 检查 docker 是否存在且可执行
+    if ! docker version >/dev/null 2>&1; then
+        log "docker 未正确安装，请重新运行本脚本安装 docker"
     else
-        log "安装portainer节点"
+        log "安装 portainer 节点"
         mkdir -p /etc/portainer
-        curl -sSL https://raw.githubusercontent.com/aspnmy/docker_installer/refs/heads/master/join_node_portainer.sh -o join_node_portainer.sh  && bash join_node_portainer.sh
-        log "portainer节点安装完成,请从portainer管理面板中添加新的docker-node节点。记得服务器或安全组放通9001端口"
+        curl -sSL https://raw.githubusercontent.com/aspnmy/docker_installer/refs/heads/master/join_node_portainer.sh -o join_node_portainer.sh && bash join_node_portainer.sh
+        log "portainer 节点安装完成，请从 portainer 管理面板中添加新的 docker-node 节点。记得服务器或安全组放通 9001 端口"
     fi
 }
-
 
 function main(){
     Check_Root
