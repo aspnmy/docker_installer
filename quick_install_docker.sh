@@ -182,7 +182,7 @@ function Install_Docker(){
                         log "从 $alt_source 下载安装脚本失败,尝试下一个备选链接"
                     fi
                 done
-                
+
                 if [ ! -f "get-docker.sh" ]; then
                     log "所有下载尝试都失败了。您可以尝试手动安装 Docker,运行以下命令："
                     log "bash <(curl -sSL https://linuxmirrors.cn/docker.sh)"
@@ -195,7 +195,7 @@ function Install_Docker(){
                 if [[ ! -d "$docker_config_folder" ]];then
                     mkdir -p "$docker_config_folder"
                 fi
-                
+
                 docker version >/dev/null 2>&1
                 if [[ $? -ne 0 ]]; then
                     log "docker 安装失败\n您可以尝试使用离线包进行安装,具体安装步骤请参考以下链接：https://1panel.cn/docs/installation/package_installation/"
@@ -238,7 +238,7 @@ function Install_Compose(){
     docker-compose version >/dev/null 2>&1
     if [[ $? -ne 0 ]]; then
         log "... 在线安装 docker-compose"
-        
+
         arch=$(uname -m)
 		if [ "$arch" == 'armv7l' ]; then
 			arch='armv7'
