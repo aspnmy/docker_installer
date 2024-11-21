@@ -44,6 +44,11 @@ function check_root_or_sudo() {
     fi
 }
 
+# 生成随机数函数
+random_container_name() {
+    tr -dc 'a-zA-Z0-9' </dev/urandom | head -c 8
+}
+
 function install_firewall() {
     check_root_or_sudo
     if [ $? -eq 0 ]; then
@@ -98,7 +103,7 @@ set_docker_compose_file(){
     if [ -f "$FILE_NAME" ]; then
         log "警告:文件 $FILE_NAME 已存在,将被覆盖,"
     fi
-
+    contaInerName=$(random_container_name)
     # 创建并写入内容到文件
     cat <<EOF > "$FILE_NAME"
 name: portainer_agent
@@ -106,7 +111,7 @@ services:
     agent:
         ports:
             - 9001:9001
-        container_name: portainer_agent
+        container_name: portainer_agent_"$contaInerName"
         restart: always
         volumes:
             - /var/run/docker.sock:/var/run/docker.sock

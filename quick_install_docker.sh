@@ -90,7 +90,7 @@ function create_daemon_json() {
 
 
 function configure_accelerator() {
-    read -p "是否配置镜像加速？(y/n): " configure_accelerator
+    read -p "是否配置镜像加速?(y/n): " configure_accelerator
     if [[ "$configure_accelerator" == "y" ]]; then
         if [ -f "$DAEMON_JSON" ]; then
             log "配置文件已存在,我们将备份现有配置文件为 ${BACKUP_FILE} 并创建新的配置文件。"
