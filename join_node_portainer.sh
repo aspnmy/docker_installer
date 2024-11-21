@@ -46,7 +46,7 @@ function check_root_or_sudo() {
 
 # 生成随机数函数
 random_container_name() {
-    tr -dc 'a-zA-Z0-9' </dev/urandom | head -c 8
+    tr -dc 'a-z0-9' </dev/urandom | head -c 8
 }
 
 function install_firewall() {
@@ -111,7 +111,7 @@ services:
     agent:
         ports:
             - 9001:9001
-        container_name: portainer_agent_"$contaInerName"
+        container_name: portainer_agent_$contaInerName
         restart: always
         volumes:
             - /var/run/docker.sock:/var/run/docker.sock
