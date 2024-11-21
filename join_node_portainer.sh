@@ -68,26 +68,54 @@ function install_firewall() {
 }
 
 function install_node_portainer() {
+    # 检查是否为 root 用户或者是否有 sudo 权限
     check_root_or_sudo
-    if [ $? -eq 0 ]; then
-        docker run -d \
-        -p 9001:9001 \
-        --name portainer_agent \
-        --restart=always \
-        -v /var/run/docker.sock:/var/run/docker.sock \
-        -v /var/lib/docker/volumes:/var/lib/docker/volumes \
-        -v /:/host \
-        portainer/agent:2.21.2
+
+    # 设置 docker-compose 文件
+    set_docker_compose_file
+
+    local FILE_NAME
+    FILE_NAME="$CURRENT_DIR/portainer-agent.yml"
+
+    # 检查 docker-compose 文件是否存在
+    if [ -f "$FILE_NAME" ]; then
+        # 使用 docker-compose 启动 Portainer 代理
+        if [ "$(id -u)" -eq 0 ]; then
+            docker-compose -f "$FILE_NAME" up -d
+        else
+            sudo docker-compose -f "$FILE_NAME" up -d
+        fi
+        log "文件 $FILE_NAME 存在,正在启动 Portainer 代理,请等待1-5分钟"
     else
-        sudo docker run -d \
-        -p 9001:9001 \
-        --name portainer_agent \
-        --restart=always \
-        -v /var/run/docker.sock:/var/run/docker.sock \
-        -v /var/lib/docker/volumes:/var/lib/docker/volumes \
-        -v /:/host \
-        portainer/agent:2.21.2
+        log "文件 $FILE_NAME 不存在,无法启动 Portainer 代理"
+        exit 1
     fi
+}
+
+set_docker_compose_file(){
+    # 文件名
+    FILE_NAME="$CURRENT_DIR/portainer-agent.yml"
+    if [ -f "$FILE_NAME" ]; then
+        log "警告:文件 $FILE_NAME 已存在,将被覆盖,"
+    fi
+
+    # 创建并写入内容到文件
+    cat <<EOF > "$FILE_NAME"
+name: portainer_agent
+services:
+    agent:
+        ports:
+            - 9001:9001
+        container_name: portainer_agent
+        restart: always
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+            - /var/lib/docker/volumes:/var/lib/docker/volumes
+            - /:/host
+        image: portainer/agent:2.21.2
+EOF
+
+    log "文件 $FILE_NAME 创建成功,"
 }
 
 
