@@ -10,7 +10,7 @@ curl -sSL https://raw.githubusercontent.com/aspnmy/docker_installer/refs/heads/m
 curl -sSL https://raw.githubusercontent.com/aspnmy/docker_installer/refs/heads/master/join_node_portainer.sh -o join_node.sh  && bash join_node.sh
 ```
 
-
+```
 main(){
 
     get_SSL
@@ -20,3 +20,4 @@ main(){
 
 
 main
+```
