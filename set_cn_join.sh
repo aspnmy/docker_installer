@@ -1,6 +1,33 @@
 #! /bin/bash
 # 单独运行的国内镜像-自定义CF加速源配置
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+BLUE='\033[0;34m'
+NC='\033[0m'
 
+CURRENT_DIR=$(
+    cd "$(dirname "$0")" || exit
+    pwd
+)
+
+function log() {
+    message="[Aspnmy Log]: $1 "
+    case "$1" in
+        *"失败"*|*"错误"*|*"请使用 root 或 sudo 权限运行此脚本"*)
+            echo -e "${RED}${message}${NC}" 2>&1 | tee -a "${CURRENT_DIR}"/install.log
+            ;;
+        *"成功"*)
+            echo -e "${GREEN}${message}${NC}" 2>&1 | tee -a "${CURRENT_DIR}"/install.log
+            ;;
+        *"忽略"*|*"跳过"*)
+            echo -e "${YELLOW}${message}${NC}" 2>&1 | tee -a "${CURRENT_DIR}"/install.log
+            ;;
+        *)
+            echo -e "${BLUE}${message}${NC}" 2>&1 | tee -a "${CURRENT_DIR}"/install.log
+            ;;
+    esac
+}
 DAEMON_JSON="/etc/docker/daemon.json"
 BACKUP_FILE="/etc/docker/daemon.json.aspnmy_bak"
 
