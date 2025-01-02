@@ -98,7 +98,7 @@ EOF
             log "无效输入，跳过创建国内源配置文件。"
             ;;
     esac
-	configure_accelerator
+	
 }
 
 function create_daemon_json() {
@@ -119,7 +119,7 @@ function configure_accelerator() {
             cp "$DAEMON_JSON" "$BACKUP_FILE"
             create_daemon_json
         else
-            create_daemon_json
+            create_cn_daemon_json
         fi
 
         log "正在重启 Docker 服务..."
