@@ -98,6 +98,7 @@ EOF
             log "无效输入，跳过创建国内源配置文件。"
             ;;
     esac
+	configure_accelerator
 }
 
 function create_daemon_json() {
