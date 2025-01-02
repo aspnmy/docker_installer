@@ -1,5 +1,7 @@
 # docker_installer
 - 快速安装docker与docker-compose脚本，方便快速在服务器中部署
+- 国内源的业务，使用 快速安装docker及组件脚本以后，如果错误提示了国内源，可以先运行独立更新国内镜像源脚本，再重新运行快速加入portainer节点的脚本
+- 如果不使用portainer来管理docker可以不运行此脚本
 
 # 独立更新国内镜像源
 
