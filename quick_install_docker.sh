@@ -77,29 +77,9 @@ function Set_Dir(){
 
 ACCELERATOR_URL="https://docker.1panelproxy.com"
 DAEMON_JSON="/etc/docker/daemon.json"
-BACKUP_FILE="/etc/docker/daemon.json.1panel_bak"
+BACKUP_FILE="/etc/docker/daemon.json.aspnmy_bak"
 
-# 国内源使用写入模式
-function create_cn_daemon_json(){
-    log "是否创建新的国内源配置文件 ${DAEMON_JSON}? (y/n，默认跳过)"
-    read -p "请输入y或回车键安装，输入no跳过: " choice
-    case "$choice" in
-        y|Y|"")
-            log "创建新的国内源配置文件 ${DAEMON_JSON}..."
-            mkdir -p /etc/docker
-            cat > /etc/docker/daemon.json << EOF
-{"bip":"172.17.0.1/24","log-level":"warn","iptables":true,"api-cors-header":"*","hosts":["unix:///var/run/docker.sock"],"registry-mirrors":["https://drrpull.shdrr.org","https://docker.shdrr.org"]} 
-EOF
-            ;;
-        no|NO|n|N)
-            log "跳过创建国内源配置文件。"
-            ;;
-        *)
-            log "无效输入，跳过创建国内源配置文件。"
-            ;;
-    esac
-	
-}
+
 
 function create_daemon_json() {
     log "创建新的配置文件 ${DAEMON_JSON}..."
@@ -338,7 +318,7 @@ function main(){
     Check_Root
     Set_Dir
     Install_Docker
-    create_cn_daemon_json
+    configure_accelerator
     Install_Compose
     join_node_portainer
 }
