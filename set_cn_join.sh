@@ -31,6 +31,15 @@ function log() {
 DAEMON_JSON="/etc/docker/daemon.json"
 BACKUP_FILE="/etc/docker/daemon.json.aspnmy_bak"
 
+log "======================= 开始安装 ======================="
+
+function Check_Root() {
+    if [[ $EUID -ne 0 ]]; then
+        log "请使用 root 或 sudo 权限运行此脚本"
+        exit 1
+    fi
+}
+
 # 国内源使用写入模式
 function create_cn_daemon_json(){
     log "是否创建新的国内源配置文件 ${DAEMON_JSON}? (y/n，默认跳过)"
@@ -77,6 +86,7 @@ function configure_accelerator() {
 }
 
 main(){
+  Check_Root
   configure_accelerator
   
 }
