@@ -49,7 +49,7 @@ function create_cn_daemon_json(){
             log "创建新的国内源配置文件 ${DAEMON_JSON}..."
             mkdir -p /etc/docker
             cat > /etc/docker/daemon.json << EOF
-{"bip":"172.17.0.1/24","log-level":"warn","iptables":true,"api-cors-header":"*","registry-mirrors":["https://drrpull.shdrr.org","https://docker.shdrr.org"]} 
+{"bip":"172.17.0.1/24","log-level":"warn","iptables":true,"api-cors-header":"*","registry-mirrors":["https://drrpull.shdrr.org","https://docker.shdrr.org","https://docker.1panelproxy.com"]} 
 EOF
             ;;
         no|NO|n|N)
