@@ -4,7 +4,7 @@
 # 独立更新国内镜像源
 
 ```
-curl -sSL https://raw.githubusercontent.com/aspnmy/docker_installer/refs/heads/master/join_node_portainer.sh -o join_node.sh  && bash join_node.sh
+curl -sSL https://raw.githubusercontent.com/aspnmy/docker_installer/refs/heads/master/set_cn_join.sh -o set_cn_join.sh  && bash set_cn_join.sh
 ```
 
 # 快速安装命令-docker及docker-compose
