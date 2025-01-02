@@ -276,31 +276,6 @@ function Install_Compose(){
     fi
 }
 
-
-
-function Set_Firewall(){
-    if which firewall-cmd >/dev/null 2>&1; then
-        if systemctl status firewalld | grep -q "Active: active" >/dev/null 2>&1;then
-            log "防火墙开放 $PANEL_PORT 端口"
-            firewall-cmd --zone=public --add-port="$PANEL_PORT"/tcp --permanent
-            firewall-cmd --reload
-        else
-            log "防火墙未开启,忽略端口开放"
-        fi
-    fi
-
-    if which ufw >/dev/null 2>&1; then
-        if systemctl status ufw | grep -q "Active: active" >/dev/null 2>&1;then
-            log "防火墙开放 $PANEL_PORT 端口"
-            ufw allow "$PANEL_PORT"/tcp
-            ufw reload
-        else
-            log "防火墙未开启,忽略端口开放"
-        fi
-    fi
-}
-
-
 # 加入portainer节点
 function join_node_portainer() {
     # 检查 docker 是否存在且可执行
