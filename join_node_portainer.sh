@@ -5,7 +5,10 @@ GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
 BLUE='\033[0;34m'
 NC='\033[0m'
-AGENT_PORT="9001 22 662"
+AGENT_PORT_1="9001"
+AGENT_PORT_2="22"
+AGENT_PORT_3="662"
+
 
 CURRENT_DIR=$(
     cd "$(dirname "$0")" || exit
@@ -147,8 +150,10 @@ function configure_firewalld() {
         systemctl start firewalld
         systemctl enable firewalld
     fi
-    log "防火墙开放 ${AGENT_PORT} 端口"
-    firewall-cmd --zone=public --add-port="${AGENT_PORT}"/tcp --permanent
+    log "防火墙开放 ${AGENT_PORT_1}\${AGENT_PORT_2}\${AGENT_PORT_3} 端口"
+    firewall-cmd --zone=public --add-port="${AGENT_PORT_1}"/tcp --permanent
+    firewall-cmd --zone=public --add-port="${AGENT_PORT_2}"/tcp --permanent
+    firewall-cmd --zone=public --add-port="${AGENT_PORT_3}"/tcp --permanent
     firewall-cmd --reload
 }
 
@@ -158,8 +163,12 @@ function configure_ufw() {
         sudo systemctl start ufw && sudo systemctl enable ufw
         sudo ufw enable && ufw reload
     fi
-    log "防火墙开放 ${AGENT_PORT} 端口"
-    ufw allow "${AGENT_PORT}"/tcp
+    log "防火墙开放 ${AGENT_PORT_1}\${AGENT_PORT_2}\${AGENT_PORT_3} 端口"
+    
+    ufw allow "${AGENT_PORT_1}"/tcp
+    ufw allow "${AGENT_PORT_2}"/tcp
+    ufw allow "${AGENT_PORT_3}"/tcp
+    
     ufw reload
 }
 
