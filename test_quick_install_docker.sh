@@ -16,7 +16,7 @@ function log() {
 # Test function for logging installation message
 function test_log_install_docker() {
     # Clear the log file
-    > "${log_file}"
+    true > "${log_file}"
 
     # Call the log function with the test message
     log "... 在线安装 docker"

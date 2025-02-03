@@ -54,7 +54,7 @@ function Check_Root() {
 
 
 function Set_Dir(){
-    if read -t 120 -p "设置 docker 资源 安装目录(默认为/opt):" PANEL_BASE_DIR;then
+    if read -r -t 120 -p "设置 docker 资源 安装目录(默认为/opt):" PANEL_BASE_DIR;then
         if [[ "$PANEL_BASE_DIR" != "" ]];then
             if [[ "$PANEL_BASE_DIR" != /* ]];then
                 log "请输入目录的完整路径"
@@ -92,7 +92,7 @@ function create_daemon_json() {
 
 
 function configure_accelerator() {
-    read -p "是否配置镜像加速?(y/n): " configure_accelerator
+    read -r -p "是否配置镜像加速?(y/n): " configure_accelerator
     if [[ "$configure_accelerator" == "y" ]]; then
         if [ -f "$DAEMON_JSON" ]; then
             log "配置文件已存在,我们将备份现有配置文件为 ${BACKUP_FILE} 并创建新的配置文件。"
@@ -147,7 +147,7 @@ function Install_Docker(){
     
                 for ((i = 0; i < iterations; i++)); do
                     delay=$(curl -o /dev/null -s -m $timeout -w "%{time_total}\n" "$source")
-                    if [ $? -ne 0 ]; then
+                    if ! curl -o /dev/null -s -m $timeout -w "%{time_total}\n" "$source"; then
                         delay=$timeout
                     fi
                     total_delay=$(awk "BEGIN {print $total_delay + $delay}")
@@ -190,15 +190,14 @@ function Install_Docker(){
                     exit 1
                 fi
 
-                sh get-docker.sh 2>&1 | tee -a ${CURRENT_DIR}/install.log
+                sh get-docker.sh 2>&1 | tee -a "${CURRENT_DIR}/install.log"
 
                 docker_config_folder="/etc/docker"
                 if [[ ! -d "$docker_config_folder" ]];then
                     mkdir -p "$docker_config_folder"
                 fi
 
-                docker version >/dev/null 2>&1
-                if [[ $? -ne 0 ]]; then
+                if ! docker version >/dev/null 2>&1; then
                     log "docker 安装失败\n您可以尝试使用离线包进行安装,具体安装步骤请参考以下链接:https://1panel.cn/docs/installation/package_installation/"
                     exit 1
                 else
@@ -224,8 +223,7 @@ function Install_Docker(){
                 mkdir -p "$docker_config_folder"
             fi
 
-            docker version >/dev/null 2>&1
-            if [[ $? -ne 0 ]]; then
+            if ! docker version >/dev/null 2>&1; then
                 log "docker 安装失败\n您可以尝试使用安装包进行安装,具体安装步骤请参考以下链接:https://1panel.cn/docs/installation/package_installation/"
                 exit 1
             else
@@ -236,15 +234,16 @@ function Install_Docker(){
 }
 
 function Install_Compose(){
-    docker-compose version >/dev/null 2>&1
-    if [[ $? -ne 0 ]]; then
+    if ! docker-compose version >/dev/null 2>&1; then
         log "... 在线安装 docker-compose"
 
         arch=$(uname -m)
-		if [ "$arch" == 'armv7l' ]; then
+        if [ "$arch" = 'armv7l' ]; then
 			arch='armv7'
 		fi
-		curl -L https://resource.fit2cloud.com/docker/compose/releases/download/v2.26.1/docker-compose-$(uname -s | tr A-Z a-z)-"$arch" -o /usr/local/bin/docker-compose 2>&1 | tee -a "${CURRENT_DIR}"/install.log
+        # shellcheck disable=SC2019
+        # shellcheck disable=SC2018
+        curl -L "https://resource.fit2cloud.com/docker/compose/releases/download/v2.26.1/docker-compose-$(uname -s | tr A-Z a-z)-$arch" -o /usr/local/bin/docker-compose 2>&1 | tee -a "${CURRENT_DIR}"/install.log
         if [[ ! -f /usr/local/bin/docker-compose ]];then
             log "docker-compose 下载失败,请稍候重试"
             exit 1
@@ -252,8 +251,7 @@ function Install_Compose(){
         chmod +x /usr/local/bin/docker-compose
         ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
 
-        docker-compose version >/dev/null 2>&1
-        if [[ $? -ne 0 ]]; then
+        if ! docker-compose version >/dev/null 2>&1; then
             log "docker-compose 安装失败"
             exit 1
         else
@@ -262,7 +260,7 @@ function Install_Compose(){
     else
         compose_v=$(docker-compose -v)
         if [[ $compose_v =~ 'docker-compose' ]];then
-            read -p "检测到已安装 Docker Compose 版本较低(需大于等于 v2.0.0 版本),是否升级 [y/n] : " UPGRADE_DOCKER_COMPOSE
+            read -r -p "检测到已安装 Docker Compose 版本较低(需大于等于 v2.0.0 版本),是否升级 [y/n] : " UPGRADE_DOCKER_COMPOSE
             if [[ "$UPGRADE_DOCKER_COMPOSE" == "Y" ]] || [[ "$UPGRADE_DOCKER_COMPOSE" == "y" ]]; then
                 rm -rf /usr/local/bin/docker-compose /usr/bin/docker-compose
                 Install_Compose
