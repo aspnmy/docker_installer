@@ -45,10 +45,12 @@ function command_exists() {
 }
 
 function is_ubuntu_or_debian() {
+    # shellcheck disable=SC1091
     . /etc/os-release && [[ "$ID" == "ubuntu" || "$ID_LIKE" == *"ubuntu"* || "$ID" == "debian" || "$ID_LIKE" == *"debian"* ]]
 }
 
 function is_centos_or_rhel_or_fedora_or_rockey() {
+    # shellcheck disable=SC1091
     . /etc/os-release && [[ "$ID" == "centos" || "$ID_LIKE" == *"centos"* || "$ID" == "rhel" || "$ID_LIKE" == *"rhel"* || "$ID" == "fedora" || "$ID_LIKE" == *"fedora"* || "$ID" == "rocky" || "$ID_LIKE" == *"rocky"* ]]
 }
 
@@ -73,7 +75,8 @@ function set_docker_compose_file() {
     if [ -f "$FILE_NAME" ]; then
         log "警告:文件 $FILE_NAME 已存在,将被覆盖"
     fi
-    local contaInerName=$(random_container_name)
+    local contaInerName
+    contaInerName=$(random_container_name)
     cat <<EOF > "$FILE_NAME"
 name: portainer_agent
 services:

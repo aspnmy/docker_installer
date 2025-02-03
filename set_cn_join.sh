@@ -42,8 +42,8 @@ function Check_Root() {
 
 # 国内源使用写入模式
 function create_cn_daemon_json(){
-    log "是否创建新的国内源配置文件 ${DAEMON_JSON}? (y/n，默认跳过)"
-    read -p "请输入y或回车键安装，输入no跳过: " choice
+    log "是否创建新的国内源配置文件 ${DAEMON_JSON}? (y/n,默认跳过)"
+    read -r -p "请输入y或回车键安装,输入no跳过: " choice
     case "$choice" in
         y|Y|"")
             log "创建新的国内源配置文件 ${DAEMON_JSON}..."
@@ -56,7 +56,7 @@ EOF
             log "跳过创建国内源配置文件。"
             ;;
         *)
-            log "无效输入，跳过创建国内源配置文件。"
+            log "无效输入,跳过创建国内源配置文件。"
             ;;
     esac
 	
@@ -66,7 +66,7 @@ EOF
 
 
 function configure_accelerator() {
-    read -p "是否配置镜像加速?(y/n): " configure_accelerator
+    read -r -p "是否配置镜像加速?(y/n): " configure_accelerator
     if [[ "$configure_accelerator" == "y" ]]; then
         if [ -f "$DAEMON_JSON" ]; then
             log "配置文件已存在,我们将备份现有配置文件为 ${BACKUP_FILE} 并创建新的配置文件。"
