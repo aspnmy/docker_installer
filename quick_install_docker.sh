@@ -54,7 +54,7 @@ function Check_Root() {
 
 
 function Set_Dir(){
-    if read -t 120 -p "设置 docker 资源 安装目录（默认为/opt）：" PANEL_BASE_DIR;then
+    if read -t 120 -p "设置 docker 资源 安装目录(默认为/opt):" PANEL_BASE_DIR;then
         if [[ "$PANEL_BASE_DIR" != "" ]];then
             if [[ "$PANEL_BASE_DIR" != /* ]];then
                 log "请输入目录的完整路径"
@@ -115,15 +115,14 @@ function Install_Docker(){
     if which docker >/dev/null 2>&1; then
         docker_version=$(docker --version | grep -oE '[0-9]+\.[0-9]+' | head -n 1)
         major_version=${docker_version%%.*}
-        minor_version=${docker_version##*.}
         if [[ $major_version -lt 20 ]]; then
             log "检测到 Docker 版本为 $docker_version,低于 20.x,可能影响部分功能的正常使用,建议手动升级至更高版本。"
         fi
         configure_accelerator
     else
         log "... 在线安装 docker"
-
-        if [[ $(curl -s ipinfo.io/country) == "CN" ]]; then
+        # 使用百度接口可以获取实际真实ip地址
+        if [[ $(curl -s https://qifu-api.baidubce.com/ip/local/geo/v1/district | jq -r '.data.country') == "中国" ]]; then
             sources=(
                 "https://mirrors.aliyun.com/docker-ce"
                 "https://mirrors.tencent.com/docker-ce"
@@ -186,7 +185,7 @@ function Install_Docker(){
                 done
 
                 if [ ! -f "get-docker.sh" ]; then
-                    log "所有下载尝试都失败了。您可以尝试手动安装 Docker,运行以下命令："
+                    log "所有下载尝试都失败了。您可以尝试手动安装 Docker,运行以下命令:"
                     log "bash <(curl -sSL https://linuxmirrors.cn/docker.sh)"
                     exit 1
                 fi
@@ -200,7 +199,7 @@ function Install_Docker(){
 
                 docker version >/dev/null 2>&1
                 if [[ $? -ne 0 ]]; then
-                    log "docker 安装失败\n您可以尝试使用离线包进行安装,具体安装步骤请参考以下链接：https://1panel.cn/docs/installation/package_installation/"
+                    log "docker 安装失败\n您可以尝试使用离线包进行安装,具体安装步骤请参考以下链接:https://1panel.cn/docs/installation/package_installation/"
                     exit 1
                 else
                     log "docker 安装成功"
@@ -227,7 +226,7 @@ function Install_Docker(){
 
             docker version >/dev/null 2>&1
             if [[ $? -ne 0 ]]; then
-                log "docker 安装失败\n您可以尝试使用安装包进行安装,具体安装步骤请参考以下链接：https://1panel.cn/docs/installation/package_installation/"
+                log "docker 安装失败\n您可以尝试使用安装包进行安装,具体安装步骤请参考以下链接:https://1panel.cn/docs/installation/package_installation/"
                 exit 1
             else
                 log "docker 安装成功"
@@ -263,7 +262,7 @@ function Install_Compose(){
     else
         compose_v=$(docker-compose -v)
         if [[ $compose_v =~ 'docker-compose' ]];then
-            read -p "检测到已安装 Docker Compose 版本较低（需大于等于 v2.0.0 版本）,是否升级 [y/n] : " UPGRADE_DOCKER_COMPOSE
+            read -p "检测到已安装 Docker Compose 版本较低(需大于等于 v2.0.0 版本),是否升级 [y/n] : " UPGRADE_DOCKER_COMPOSE
             if [[ "$UPGRADE_DOCKER_COMPOSE" == "Y" ]] || [[ "$UPGRADE_DOCKER_COMPOSE" == "y" ]]; then
                 rm -rf /usr/local/bin/docker-compose /usr/bin/docker-compose
                 Install_Compose
